@@ -4,12 +4,12 @@ glbg is a tool which renders GL shader desktop backgrounds to wlroots-based comp
 
 ## Demo
 
-![Demo Final Flower](https://example.com)
-![Demo Shadertoy Tutorial](https://example.com)
+![Demo Final Flower](https://github.com/jw4js/glbg/raw/master/demos/final_flower.gif)
+![Demo Shadertoy Tutorial](https://github.com/jw4js/glbg/raw/master/demos/shadertoy_tutorial.gif)
 
 With a transparent background terminal, one can achieve the following effect. This also works with other windows which have transparency.
 
-![Demo Transparent](https://example.com)
+![Demo Transparent](https://github.com/jw4js/glbg/raw/master/demos/transparent.gif)
 
 ## Compiling
 
