@@ -1,0 +1,3 @@
+[[config]]
+name = "eDP-1"
+shader = "shaders/final_flower.glsl"

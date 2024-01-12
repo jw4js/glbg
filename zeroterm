@@ -1,0 +1,2 @@
+#!/bin/sh
+exec printf '\x00' | cat "${1}" - > "${2}"

@@ -1,0 +1,9 @@
+#!/bin/sh
+TMP="$(mktemp -d)"
+A="$(realpath ${1})"
+BA="$(basename ${1})"
+B="$(realpath ${2})"
+cd "${TMP}"
+ln -s "${A}" "${BA}"
+ld -r -b binary -o "${B}" "${BA}"
+rm -r "${TMP}"
