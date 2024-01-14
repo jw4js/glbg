@@ -147,18 +147,19 @@ char* read_file(char* filename) {
 	char* buf = malloc(size + 1);
 	fseek(file, 0, SEEK_SET);
 	fread(buf, 1, size, file);
+	buf[size] = 0;
 	fclose(file);
 	return buf;
 }
 
 bool parse_config(struct wl_list* configs, char* config_file) {
-	char* dir = dirname(config_file);
-
 	char* config_toml_str = read_file(config_file);
 	if(!config_toml_str) {
 		fprintf(stderr, "could not read config file: %s\n", config_file);
 		return false;
 	}
+
+	char* dir = dirname(config_file);
 
 	const size_t BUF_SIZE = 256;
 	char buf[BUF_SIZE];
@@ -166,6 +167,10 @@ bool parse_config(struct wl_list* configs, char* config_file) {
 	if(!tbl)
 		goto err;
 	toml_array_t *arr_configs = toml_table_array(tbl, "config");
+	if(!arr_configs) {
+		fprintf(stderr, "no configs found in TOML file\n");
+		return false;
+	}
 	size_t n = toml_array_len(arr_configs);
 	for(size_t i = 0; i < n; i++) {
 		toml_table_t* tbl_config = toml_array_table(arr_configs, i);
@@ -188,7 +193,12 @@ bool parse_config(struct wl_list* configs, char* config_file) {
 		struct config* config = malloc(sizeof(*config));
 		config->name = strdup(config_name.u.s);
 		config->renderer = &shadertoy_renderer;
-		config->renderer_create_data = read_file(config_shader.u.s);
+		char *src_frag = read_file(buf);
+		if(!src_frag) {
+			fprintf(stderr, "could not read shader: %s\n", buf);
+			return false;
+		}
+		config->renderer_create_data = src_frag;
 		wl_list_insert(configs, &config->link);
 	}
 	return true;
